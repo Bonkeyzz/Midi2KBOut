@@ -2,7 +2,6 @@ C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\MIDI to VirtualPiano 
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\MIDI to VirtualPiano Converter.exe
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\MIDI to VirtualPiano Converter.pdb
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\Melanchall.DryWetMidi.xml
-C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\MidiSharp.xml
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\System.Diagnostics.DiagnosticSource.xml
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\Midi2KBOut.Mid2VpAbout.resources
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\Midi2KBOut.MidiToVPianoMain.resources

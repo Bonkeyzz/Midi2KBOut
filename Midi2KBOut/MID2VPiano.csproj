@@ -51,9 +51,6 @@
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="MidiSharp">
-      <HintPath>..\packages\MidiSharp.0.9.6516.2348\lib\portable40-net40+sl5+win8+wp8+wpa81\MidiSharp.dll</HintPath>
-    </Reference>
     <Reference Include="NetCoreEx.BinaryExtensions, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NetCoreEx.BinaryExtensions.3.0.0\lib\netstandard1.4\NetCoreEx.BinaryExtensions.dll</HintPath>
     </Reference>

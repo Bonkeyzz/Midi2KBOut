@@ -28,13 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mid2VpAbout));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbLinkCredit1 = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
+            this.lbLinkCredit1 = new System.Windows.Forms.LinkLabel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,33 +50,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // label1
+            // label4
             // 
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(0, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(290, 23);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "MIDI to VirtualPiano Converter : By Bonkeyzz";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(0, 35);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(290, 50);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "A GUI implemation of the \r\nPython MIDI to VirtualPiano Macro";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 109);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(138, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Original Python Program By:";
+            this.label4.Location = new System.Drawing.Point(-1, 122);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(290, 66);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "  Libraries Used: DryWetMidi : By Maxim Dobroselsky\r\n                            " +
+    "Costura : By Fody\r\n                            WinApi : By Prasanna V. Loganatha" +
+    "r";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbLinkCredit1
             // 
@@ -90,16 +72,35 @@
             this.lbLinkCredit1.Text = "Stereo101 (Github)";
             this.lbLinkCredit1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbLinkCredit1_LinkClicked);
             // 
-            // label4
+            // label3
             // 
-            this.label4.Location = new System.Drawing.Point(-1, 125);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(290, 66);
-            this.label4.TabIndex = 4;
-            this.label4.Text = resources.GetString("label4.Text");
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 109);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(138, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Original Python Program By:";
             // 
-            // Mid2VPAbout
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(0, 35);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(290, 50);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "A GUI implemation of the \r\nPython MIDI to VirtualPiano Macro";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(0, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(290, 23);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "MIDI to VirtualPiano Converter : By Bonkeyzz";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Mid2VpAbout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

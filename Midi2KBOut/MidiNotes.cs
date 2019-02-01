@@ -5,9 +5,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Melanchall.DryWetMidi.Smf;
 using Melanchall.DryWetMidi.Smf.Interaction;
-using MidiSharp;
-using MidiSharp.Events.Meta;
-
 namespace Midi2KBOut
 {
     public class MidiNotes
@@ -20,10 +17,10 @@ namespace Midi2KBOut
         public Thread TrackPlayThread;
         private double _tStart;
 
-        public MidiNotes(MidiSequence sequence, MidiFile file)
+        public MidiNotes(MidiFile file)
         {
-            Tempo = sequence.Tracks[0].Events.OfType<TempoMetaMidiEvent>().First().Value * DTempoDivider;
-            Division = sequence.Division;
+            Tempo = file.GetTempoMap().Tempo.AtTime(0).MicrosecondsPerQuarterNote * DTempoDivider;
+            Division = Convert.ToDouble(file.TimeDivision.ToString().Split(' ')[0]);
             CurrentMidiFile = file;
         }
 
@@ -67,7 +64,7 @@ namespace Midi2KBOut
                 var noteTime = double.Parse(sortedNote.Split('\t')[0]);
                 var noteName = sortedNote.Split('\t')[1];
 
-                Utils.Pprint($"[MidiNotes::PlayTrack()] Time:{noteTime} Note:'{noteName}'\n", ConsoleColor.Magenta);
+                Utils.Pprint($"[MidiNotes::PlayTrack()] Time:{noteTime}\tNote:'{noteName}'\n", ConsoleColor.Magenta);
 
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (_offset == -1) _offset = noteTime;

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using Melanchall.DryWetMidi.Smf;
-using MidiSharp;
 using WinApi.User32;
 
 namespace Midi2KBOut
@@ -15,10 +14,8 @@ namespace Midi2KBOut
         private MidiFile _dryWetMidiFile;
         private int _id;
 
-        public double ImidTempo = 120;
         private MidiNotes _mid;
         private OpenFileDialog _midiDialog;
-        private MidiSequence _midiseqFile;
 
         public MidiToVPianoMain()
         {
@@ -34,30 +31,24 @@ namespace Midi2KBOut
                 else
                     using (Stream midiStream = File.OpenRead(_midiDialog.FileName))
                     {
-                        _midiseqFile = MidiSequence.Open(midiStream);
                         _dryWetMidiFile = MidiFile.Read(_midiDialog.FileName);
 
-                        _mid = new MidiNotes(_midiseqFile, _dryWetMidiFile);
+                        _mid = new MidiNotes(_dryWetMidiFile);
 
                         Utils.Pprint("\n==Midi Info==\n\n", ConsoleColor.White);
                         Utils.Pprint($"Midi Name: {_midiDialog.SafeFileName}\n", ConsoleColor.White);
                         Utils.Pprint($"Size: {File.OpenRead(_midiDialog.FileName).Length / 1024f:F3} KB\n",
                             ConsoleColor.White);
-                        Utils.Pprint($"Number of tracks: {_midiseqFile.Tracks.Count}\n", ConsoleColor.White);
-                        Utils.Pprint($"Division Type: {_midiseqFile.DivisionType}\n", ConsoleColor.White);
-                        Utils.Pprint($"Division: {_midiseqFile.Division}\n", ConsoleColor.White);
-                        Utils.Pprint($"Format: {_midiseqFile.Format}\n", ConsoleColor.White);
+                        Utils.Pprint($"Number of tracks: {_dryWetMidiFile.GetTrackChunks().Count()}\n", ConsoleColor.White);
+                        Utils.Pprint($"Division Type: {_dryWetMidiFile.TimeDivision.GetType().ToString().Replace("Melanchall.DryWetMidi.Smf.", string.Empty)}\n", ConsoleColor.White);
+                        Utils.Pprint($"Division: {_dryWetMidiFile.TimeDivision.ToString().Split(' ')[0]}\n", ConsoleColor.White);
+                        Utils.Pprint($"Format: {_dryWetMidiFile.OriginalFormat}\n", ConsoleColor.White);
 
-                        Utils.Pprint(
-                            _midiseqFile.DivisionType == DivisionType.FramesPerSecond
-                                ? $"FPS: {_midiseqFile.FramesPerSecond}\n"
-                                : $"Ticks Per Beat or Frame: {_midiseqFile.TicksPerBeatOrFrame}\n", ConsoleColor.White);
-
-                        if (_midiseqFile.Format == Format.Two)
+                        if (_dryWetMidiFile.OriginalFormat == MidiFileFormat.MultiSequence)
                         {
-                            Utils.Pprint("This midi file's format is Two, which is not supported yet.",
+                            Utils.Pprint("This midi file's format is MultiSequence which is not supported yet.",
                                 ConsoleColor.Red);
-                            _midiseqFile = null;
+                            _dryWetMidiFile = null;
                         }
 
                         lbTempo.Text = $"Tempo: {Math.Round(_mid.Tempo)}";
