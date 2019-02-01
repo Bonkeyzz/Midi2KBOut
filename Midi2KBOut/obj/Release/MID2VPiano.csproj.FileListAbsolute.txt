@@ -1,0 +1,14 @@
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\MIDI to VirtualPiano Converter.exe.config
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\MIDI to VirtualPiano Converter.exe
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\MIDI to VirtualPiano Converter.pdb
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\Melanchall.DryWetMidi.xml
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\MidiSharp.xml
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Release\System.Diagnostics.DiagnosticSource.xml
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\Midi2KBOut.Mid2VpAbout.resources
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\Midi2KBOut.MidiToVPianoMain.resources
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.Properties.Resources.resources
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csproj.GenerateResource.cache
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csproj.CoreCompileInputs.cache
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csproj.CopyComplete
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MIDI to VirtualPiano Converter.exe
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MIDI to VirtualPiano Converter.pdb
