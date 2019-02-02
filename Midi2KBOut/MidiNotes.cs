@@ -15,6 +15,7 @@ namespace Midi2KBOut
         private double _offset = -1;
 
         public Thread TrackPlayThread;
+        public bool bIsPlaying = false;
         private double _tStart;
 
         public MidiNotes(MidiFile file)
@@ -61,29 +62,35 @@ namespace Midi2KBOut
 
             foreach (var sortedNote in parsedNotes)
             {
-                var noteTime = double.Parse(sortedNote.Split('\t')[0]);
-                var noteName = sortedNote.Split('\t')[1];
-
-                Utils.Pprint($"[MidiNotes::PlayTrack()] Time:{noteTime}\tNote:'{noteName}'\n", ConsoleColor.Magenta);
-
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (_offset == -1) _offset = noteTime;
-
-                var isLetterOrDigit = SSpecialChars.Contains(noteName) | char.IsUpper(char.Parse(noteName));
-
-                Thread.Sleep(ParseTime(noteTime));
-                if (isLetterOrDigit)
+                if (bIsPlaying)
                 {
-                    Utils.SendShift(true);
-                    Utils.SendKey(noteName);
-                    Utils.SendShift(false);
+                    var noteTime = double.Parse(sortedNote.Split('\t')[0]);
+                    var noteName = sortedNote.Split('\t')[1];
+
+                    Utils.Pprint($"[MidiNotes::PlayTrack()] Time:{noteTime}\tNote:'{noteName}'\n",
+                        ConsoleColor.Magenta);
+
+                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    if (_offset == -1) _offset = noteTime;
+
+                    var isLetterOrDigit = SSpecialChars.Contains(noteName) | char.IsUpper(char.Parse(noteName));
+
+                    Thread.Sleep(ParseTime(noteTime));
+                    if (isLetterOrDigit)
+                    {
+                        Utils.SendShift(true);
+                        Utils.SendKey(noteName);
+                        Utils.SendShift(false);
+                    }
+                    else
+                    {
+                        Utils.SendKey(noteName);
+                    }
                 }
-                else
-                {
-                    Utils.SendKey(noteName);
-                }
+                else break;
             }
 
+            bIsPlaying = false;
             Utils.Pprint("[MidiNotes::PlayTrack()] Finished!\n", ConsoleColor.Green);
             if (Application.OpenForms.OfType<MidiToVPianoMain>().Any())
                 Application.OpenForms.OfType<MidiToVPianoMain>().First().btnPlay.Invoke(new MethodInvoker(() =>
@@ -94,7 +101,11 @@ namespace Midi2KBOut
 
         public void BeginPlayingTracks()
         {
-            TrackPlayThread = new Thread(() => PlayTrack(CurrentMidiFile.GetTrackChunks().Merge()));
+            TrackPlayThread = new Thread(() =>
+            {
+                bIsPlaying = true;
+                PlayTrack(CurrentMidiFile.GetTrackChunks().Merge());
+            });
             TrackPlayThread.Start();
         }
     }

@@ -29,34 +29,35 @@ namespace Midi2KBOut
                 if (string.IsNullOrEmpty(_midiDialog.FileName))
                     Utils.Pprint("No file was selected.\n", ConsoleColor.Red);
                 else
-                    using (Stream midiStream = File.OpenRead(_midiDialog.FileName))
+                    txFileLocation.Text = _midiDialog.FileName;
+                    _dryWetMidiFile = MidiFile.Read(_midiDialog.FileName);
+
+                    _mid = new MidiNotes(_dryWetMidiFile);
+
+                    Utils.Pprint("\n==Midi Info==\n\n", ConsoleColor.White);
+                    Utils.Pprint($"Midi Name: {_midiDialog.SafeFileName}\n", ConsoleColor.White);
+                    Utils.Pprint($"Size: {File.OpenRead(_midiDialog.FileName).Length / 1024f:F3} KB\n",
+                        ConsoleColor.White);
+                    Utils.Pprint($"Number of tracks: {_dryWetMidiFile.GetTrackChunks().Count()}\n", ConsoleColor.White);
+                    Utils.Pprint(
+                        $"Division Type: {_dryWetMidiFile.TimeDivision.GetType().ToString().Replace("Melanchall.DryWetMidi.Smf.", string.Empty)}\n",
+                        ConsoleColor.White);
+                    Utils.Pprint($"Division: {_dryWetMidiFile.TimeDivision.ToString().Split(' ')[0]}\n",
+                        ConsoleColor.White);
+                    Utils.Pprint($"Format: {_dryWetMidiFile.OriginalFormat}\n", ConsoleColor.White);
+
+                    if (_dryWetMidiFile.OriginalFormat == MidiFileFormat.MultiSequence)
                     {
-                        _dryWetMidiFile = MidiFile.Read(_midiDialog.FileName);
-
-                        _mid = new MidiNotes(_dryWetMidiFile);
-
-                        Utils.Pprint("\n==Midi Info==\n\n", ConsoleColor.White);
-                        Utils.Pprint($"Midi Name: {_midiDialog.SafeFileName}\n", ConsoleColor.White);
-                        Utils.Pprint($"Size: {File.OpenRead(_midiDialog.FileName).Length / 1024f:F3} KB\n",
-                            ConsoleColor.White);
-                        Utils.Pprint($"Number of tracks: {_dryWetMidiFile.GetTrackChunks().Count()}\n", ConsoleColor.White);
-                        Utils.Pprint($"Division Type: {_dryWetMidiFile.TimeDivision.GetType().ToString().Replace("Melanchall.DryWetMidi.Smf.", string.Empty)}\n", ConsoleColor.White);
-                        Utils.Pprint($"Division: {_dryWetMidiFile.TimeDivision.ToString().Split(' ')[0]}\n", ConsoleColor.White);
-                        Utils.Pprint($"Format: {_dryWetMidiFile.OriginalFormat}\n", ConsoleColor.White);
-
-                        if (_dryWetMidiFile.OriginalFormat == MidiFileFormat.MultiSequence)
-                        {
-                            Utils.Pprint("This midi file's format is MultiSequence which is not supported yet.",
-                                ConsoleColor.Red);
-                            _dryWetMidiFile = null;
-                        }
-
-                        lbTempo.Text = $"Tempo: {Math.Round(_mid.Tempo)}";
+                        Utils.Pprint("This midi file's format is MultiSequence which is not supported yet.",
+                            ConsoleColor.Red);
+                        _dryWetMidiFile = null;
                     }
+
+                    lbTempo.Text = $"Tempo: {Math.Round(_mid.Tempo)}";
             }
             catch (Exception exc)
             {
-                Utils.Pprint($"[{exc.GetType()}] {exc.Message}", ConsoleColor.Red);
+                Utils.Pprint($"[{exc.GetType()}] {exc.Message}\n", ConsoleColor.Red);
             }
         }
 
@@ -85,7 +86,6 @@ namespace Midi2KBOut
 
             _midiDialog.ShowDialog();
             LoadStart();
-            txFileLocation.Text = _midiDialog.FileName;
         }
 
 
@@ -118,6 +118,7 @@ namespace Midi2KBOut
             }
             else if (btnPlay.Text == "Stop")
             {
+                if (_mid.bIsPlaying) _mid.bIsPlaying = false;
                 _mid?.TrackPlayThread.Abort();
                 _mid.TrackPlayThread = null;
                 Utils.Pprint("Player has stopped.\n", ConsoleColor.Yellow);
