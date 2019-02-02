@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using Melanchall.DryWetMidi.Devices;
 using Melanchall.DryWetMidi.Smf;
 using WinApi.User32;
 
@@ -27,12 +28,21 @@ namespace Midi2KBOut
             try
             {
                 if (string.IsNullOrEmpty(_midiDialog.FileName))
+                {
                     Utils.Pprint("No file was selected.\n", ConsoleColor.Red);
+                    rBkeybdevent.Enabled = false;
+                    rBSendInput.Enabled = false;
+                }
                 else
+                {
                     txFileLocation.Text = _midiDialog.FileName;
                     _dryWetMidiFile = MidiFile.Read(_midiDialog.FileName);
 
                     _mid = new MidiNotes(_dryWetMidiFile);
+                    rBkeybdevent.Enabled = true;
+                    rBSendInput.Enabled = true;
+                    _mid.usingkeybdevent = rBkeybdevent.Checked;
+
 
                     Utils.Pprint("\n==Midi Info==\n\n", ConsoleColor.White);
                     Utils.Pprint($"Midi Name: {_midiDialog.SafeFileName}\n", ConsoleColor.White);
@@ -54,11 +64,13 @@ namespace Midi2KBOut
                     }
 
                     lbTempo.Text = $"Tempo: {Math.Round(_mid.Tempo)}";
+                }
             }
             catch (Exception exc)
             {
                 Utils.Pprint($"[{exc.GetType()}] {exc.Message}\n", ConsoleColor.Red);
             }
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -106,23 +118,34 @@ namespace Midi2KBOut
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            if (btnPlay.Text == "Play")
+            if (_mid != null)
             {
-                User32Methods.SetForegroundWindow(Process.GetProcessById(_id).MainWindowHandle);
-                Utils.Pprint(
-                    $"Window with Process ID:'{_id}' is focused automatically. Waiting 2 seconds before playing the MIDI track...\n",
-                    ConsoleColor.White);
-                Thread.Sleep(2000);
-                _mid?.BeginPlayingTracks();
-                btnPlay.Text = "Stop";
+                if (btnPlay.Text == "Play")
+                {
+                    User32Methods.SetForegroundWindow(Process.GetProcessById(_id).MainWindowHandle);
+                    Utils.Pprint(
+                        $"Window with Process ID:'{_id}' is focused automatically. Waiting 2 seconds before playing the MIDI track...\n",
+                        ConsoleColor.White);
+                    Thread.Sleep(2000);
+                    _mid?.BeginPlayingTracks();
+                    btnPlay.Text = "Stop";
+                    rBSendInput.Enabled = false;
+                    rBkeybdevent.Enabled = false;
+                }
+                else if (btnPlay.Text == "Stop")
+                {
+                    if (_mid.bIsPlaying) _mid.bIsPlaying = false;
+                    _mid?.TrackPlayThread.Abort();
+                    _mid.TrackPlayThread = null;
+                    Utils.Pprint("Player has stopped.\n", ConsoleColor.Yellow);
+                    btnPlay.Text = "Play";
+                    rBSendInput.Enabled = true;
+                    rBkeybdevent.Enabled = true;
+                }
             }
-            else if (btnPlay.Text == "Stop")
+            else
             {
-                if (_mid.bIsPlaying) _mid.bIsPlaying = false;
-                _mid?.TrackPlayThread.Abort();
-                _mid.TrackPlayThread = null;
-                Utils.Pprint("Player has stopped.\n", ConsoleColor.Yellow);
-                btnPlay.Text = "Play";
+                Utils.Pprint("No song has been selected.\n", ConsoleColor.Red);
             }
         }
 
@@ -134,6 +157,19 @@ namespace Midi2KBOut
         private void btnAbout_Click(object sender, EventArgs e)
         {
             if (!Application.OpenForms.OfType<Mid2VpAbout>().Any()) new Mid2VpAbout().Show();
+        }
+
+        private void rBSendInput_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rBSendInput.Checked) _mid.usingkeybdevent = false;
+        }
+
+        private void rBkeybdevent_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rBkeybdevent.Checked)
+            {
+                _mid.usingkeybdevent = true;
+            }
         }
     }
 }

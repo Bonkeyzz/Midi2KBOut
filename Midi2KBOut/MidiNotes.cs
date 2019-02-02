@@ -5,6 +5,8 @@ using System.Threading;
 using System.Windows.Forms;
 using Melanchall.DryWetMidi.Smf;
 using Melanchall.DryWetMidi.Smf.Interaction;
+using Keys = System.Windows.Forms.Keys;
+
 namespace Midi2KBOut
 {
     public class MidiNotes
@@ -16,6 +18,7 @@ namespace Midi2KBOut
 
         public Thread TrackPlayThread;
         public bool bIsPlaying = false;
+        public bool usingkeybdevent = false;
         private double _tStart;
 
         public MidiNotes(MidiFile file)
@@ -67,24 +70,37 @@ namespace Midi2KBOut
                     var noteTime = double.Parse(sortedNote.Split('\t')[0]);
                     var noteName = sortedNote.Split('\t')[1];
 
-                    Utils.Pprint($"[MidiNotes::PlayTrack()] Time:{noteTime}\tNote:'{noteName}'\n",
+                    Utils.Pprint($"[MidiNotes::PlayTrack()] Time:{noteTime}\tNote:'{noteName}' Mode: {(usingkeybdevent ? "keybd_event" : "SendInput")}\n",
                         ConsoleColor.Magenta);
 
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     if (_offset == -1) _offset = noteTime;
 
                     var isLetterOrDigit = SSpecialChars.Contains(noteName) | char.IsUpper(char.Parse(noteName));
-
                     Thread.Sleep(ParseTime(noteTime));
-                    if (isLetterOrDigit)
+                    if (!usingkeybdevent)
                     {
-                        Utils.SendShift(true);
-                        Utils.SendKey(noteName);
-                        Utils.SendShift(false);
+                        if (isLetterOrDigit)
+                        {
+                            Utils.SendShift(true);
+                            Utils.SendKey(noteName);
+                            Utils.SendShift(false);
+                        }
+                        else
+                        {
+                            Utils.SendKey(noteName);
+                        }
                     }
                     else
                     {
-                        Utils.SendKey(noteName);
+                        if (isLetterOrDigit)
+                        {
+                            Utils.keybdSendKey(noteName,true);
+                        }
+                        else
+                        {
+                            Utils.keybdSendKey(noteName,false);
+                        }
                     }
                 }
                 else break;
@@ -96,6 +112,8 @@ namespace Midi2KBOut
                 Application.OpenForms.OfType<MidiToVPianoMain>().First().btnPlay.Invoke(new MethodInvoker(() =>
                 {
                     Application.OpenForms.OfType<MidiToVPianoMain>().First().btnPlay.Text = "Play";
+                    Application.OpenForms.OfType<MidiToVPianoMain>().First().rBSendInput.Enabled = true;
+                    Application.OpenForms.OfType<MidiToVPianoMain>().First().rBkeybdevent.Enabled = true;
                 }));
         }
 

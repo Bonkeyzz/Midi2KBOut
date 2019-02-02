@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-
 namespace Midi2KBOut
 {
     static class Program
@@ -8,7 +7,10 @@ namespace Midi2KBOut
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        public const string SVersion = "v1.0.0";
+        public const string SVersion = "v1.3.0";
+
+
+
 
         [STAThread]
         static void Main()
@@ -17,6 +19,7 @@ namespace Midi2KBOut
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MidiToVPianoMain());
+
         }
     }
 }

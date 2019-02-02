@@ -33,11 +33,14 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txFileLocation = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.lbTempo = new System.Windows.Forms.Label();
             this.btnPlay = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.cmWinList = new System.Windows.Forms.ComboBox();
-            this.btnAbout = new System.Windows.Forms.Button();
+            this.rBSendInput = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rBkeybdevent = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +76,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.rBkeybdevent);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.rBSendInput);
             this.groupBox2.Controls.Add(this.btnAbout);
             this.groupBox2.Controls.Add(this.lbTempo);
             this.groupBox2.Controls.Add(this.btnPlay);
@@ -84,6 +90,16 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Target Window";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Location = new System.Drawing.Point(634, 46);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(75, 37);
+            this.btnAbout.TabIndex = 5;
+            this.btnAbout.Text = "About";
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
             // lbTempo
             // 
@@ -125,15 +141,40 @@
             this.cmWinList.TabIndex = 0;
             this.cmWinList.DropDownClosed += new System.EventHandler(this.cmWinList_DropDownClosed);
             // 
-            // btnAbout
+            // rBSendInput
             // 
-            this.btnAbout.Location = new System.Drawing.Point(634, 46);
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Size = new System.Drawing.Size(75, 37);
-            this.btnAbout.TabIndex = 5;
-            this.btnAbout.Text = "About";
-            this.btnAbout.UseVisualStyleBackColor = true;
-            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            this.rBSendInput.AutoSize = true;
+            this.rBSendInput.Checked = true;
+            this.rBSendInput.Enabled = false;
+            this.rBSendInput.Location = new System.Drawing.Point(45, 66);
+            this.rBSendInput.Name = "rBSendInput";
+            this.rBSendInput.Size = new System.Drawing.Size(74, 17);
+            this.rBSendInput.TabIndex = 6;
+            this.rBSendInput.TabStop = true;
+            this.rBSendInput.Text = "SendInput";
+            this.rBSendInput.UseVisualStyleBackColor = true;
+            this.rBSendInput.CheckedChanged += new System.EventHandler(this.rBSendInput_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Mode:";
+            // 
+            // rBkeybdevent
+            // 
+            this.rBkeybdevent.AutoSize = true;
+            this.rBkeybdevent.Enabled = false;
+            this.rBkeybdevent.Location = new System.Drawing.Point(123, 66);
+            this.rBkeybdevent.Name = "rBkeybdevent";
+            this.rBkeybdevent.Size = new System.Drawing.Size(236, 17);
+            this.rBkeybdevent.TabIndex = 8;
+            this.rBkeybdevent.Text = "keybd_event (Slower, works on Garry\'s Mod)";
+            this.rBkeybdevent.UseVisualStyleBackColor = true;
+            this.rBkeybdevent.CheckedChanged += new System.EventHandler(this.rBkeybdevent_CheckedChanged);
             // 
             // MidiToVPianoMain
             // 
@@ -167,6 +208,9 @@
         public System.Windows.Forms.Label lbTempo;
         private System.Windows.Forms.Button btnAbout;
         public System.Windows.Forms.Button btnPlay;
+        private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.RadioButton rBkeybdevent;
+        public System.Windows.Forms.RadioButton rBSendInput;
     }
 }
 
