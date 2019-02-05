@@ -75,6 +75,7 @@ namespace Midi2KBOut
         }
         public static void keybdSendKey(string key, bool shifted)
         {
+            int delayTime = 12;
            ushort bKey = (ushort) VkKeyScan(char.Parse(key));
             ushort bScan = char.Parse(key);
 
@@ -82,14 +83,14 @@ namespace Midi2KBOut
             {
                 SendKeybdShift(true);
                 keybd_event(bKey, bScan, 0, UIntPtr.Zero);
-                Thread.Sleep(5);
+                Thread.Sleep(delayTime);
                 SendKeybdShift(false);
             }
             else
             {
                 keybd_event(bKey, bScan, 0, UIntPtr.Zero);
             }
-            Thread.Sleep(5);
+            Thread.Sleep(delayTime);
             keybd_event(bKey, bScan, (uint)KeyboardInputFlags.KEYEVENTF_KEYUP, UIntPtr.Zero);
         }
 

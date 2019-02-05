@@ -21,6 +21,10 @@ namespace Midi2KBOut
         public bool usingkeybdevent = false;
         private double _tStart;
 
+        public EventWaitHandle wh = new AutoResetEvent(true);
+
+        public bool bIsPaused = false;
+
         public MidiNotes(MidiFile file)
         {
             Tempo = file.GetTempoMap().Tempo.AtTime(0).MicrosecondsPerQuarterNote * DTempoDivider;
@@ -28,7 +32,7 @@ namespace Midi2KBOut
             CurrentMidiFile = file;
         }
 
-        public double Tempo { get; }
+        public double Tempo { get; set; }
         private double Division { get; }
         private MidiFile CurrentMidiFile { get; }
 
@@ -43,41 +47,40 @@ namespace Midi2KBOut
             return SvPianoScale[mapNote].ToString();
         }
 
-        private TimeSpan ParseTime(double time)
+        private void MidiClockDelay(double time)
         {
             var goTime = (time - _offset) * (60 / Math.Round(Tempo));
 
             if (goTime - (Utils.GetTime() - _tStart) > 0)
-                return TimeSpan.FromSeconds(goTime - (Utils.GetTime() - _tStart));
-            return new TimeSpan();
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(goTime - (Utils.GetTime() - _tStart)));
+            }
         }
+
+        private double timeSincePause = -1;
 
         private void PlayTrack(TrackChunk track)
         {
-            Utils.Pprint("[MidiNotes::PlayTrack()] Started!\n", ConsoleColor.Green);
+            Utils.Pprint($"[MidiNotes::PlayTrack()] Started! Output Mode: {(usingkeybdevent ? "keybd_event" : "SendInput")}\n", ConsoleColor.Green);
             _tStart = Utils.GetTime();
 
             var notes = new List<Note>(track.GetNotes().ToList());
-            var parsedNotes = new List<string>();
 
-            foreach (var t in notes)
-                parsedNotes.Add($"{(double) t.Time / Division:F3}\t{NoteToVPianoKey(t.NoteNumber)}");
-
-            foreach (var sortedNote in parsedNotes)
+            foreach (var note in notes)
             {
                 if (bIsPlaying)
                 {
-                    var noteTime = double.Parse(sortedNote.Split('\t')[0]);
-                    var noteName = sortedNote.Split('\t')[1];
+                    var noteTime = ((double) note.Time / Division);
+                    var noteName = NoteToVPianoKey(note.NoteNumber);
 
-                    Utils.Pprint($"[MidiNotes::PlayTrack()] Time:{noteTime}\tNote:'{noteName}' Mode: {(usingkeybdevent ? "keybd_event" : "SendInput")}\n",
-                        ConsoleColor.Magenta);
 
-                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    Utils.Pprint($"[MidiNotes::PlayTrack()] Time: {noteTime:F3}\tNote / VPNote: '{note.NoteName}' / '{noteName}', Vel: {note.Velocity}, Oct: {note.Octave}, Len: {note.Length}, Ch: {note.Channel}\r\n", ConsoleColor.Magenta);
+
                     if (_offset == -1) _offset = noteTime;
 
                     var isLetterOrDigit = SSpecialChars.Contains(noteName) | char.IsUpper(char.Parse(noteName));
-                    Thread.Sleep(ParseTime(noteTime));
+
+                    MidiClockDelay(noteTime);
                     if (!usingkeybdevent)
                     {
                         if (isLetterOrDigit)
@@ -95,15 +98,14 @@ namespace Midi2KBOut
                     {
                         if (isLetterOrDigit)
                         {
-                            Utils.keybdSendKey(noteName,true);
+                            Utils.keybdSendKey(noteName, true);
                         }
                         else
                         {
-                            Utils.keybdSendKey(noteName,false);
+                            Utils.keybdSendKey(noteName, false);
                         }
                     }
                 }
-                else break;
             }
 
             bIsPlaying = false;
@@ -114,6 +116,7 @@ namespace Midi2KBOut
                     Application.OpenForms.OfType<MidiToVPianoMain>().First().btnPlay.Text = "Play";
                     Application.OpenForms.OfType<MidiToVPianoMain>().First().rBSendInput.Enabled = true;
                     Application.OpenForms.OfType<MidiToVPianoMain>().First().rBkeybdevent.Enabled = true;
+                    Application.OpenForms.OfType<MidiToVPianoMain>().First().tBTempo.Enabled = true;
                 }));
         }
 

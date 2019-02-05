@@ -2,10 +2,12 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Threading;
 using System.Windows.Forms;
 using Melanchall.DryWetMidi.Devices;
 using Melanchall.DryWetMidi.Smf;
+using MID2VPiano;
 using WinApi.User32;
 
 namespace Midi2KBOut
@@ -32,6 +34,8 @@ namespace Midi2KBOut
                     Utils.Pprint("No file was selected.\n", ConsoleColor.Red);
                     rBkeybdevent.Enabled = false;
                     rBSendInput.Enabled = false;
+                    tBTempo.Enabled = false;
+                    keyPressDetect.Enabled = false;
                 }
                 else
                 {
@@ -41,8 +45,10 @@ namespace Midi2KBOut
                     _mid = new MidiNotes(_dryWetMidiFile);
                     rBkeybdevent.Enabled = true;
                     rBSendInput.Enabled = true;
+                    tBTempo.Enabled = true;
+                    tBTempo.Value = (int)_mid.Tempo;
                     _mid.usingkeybdevent = rBkeybdevent.Checked;
-
+                    keyPressDetect.Enabled = true;
 
                     Utils.Pprint("\n==Midi Info==\n\n", ConsoleColor.White);
                     Utils.Pprint($"Midi Name: {_midiDialog.SafeFileName}\n", ConsoleColor.White);
@@ -84,6 +90,8 @@ namespace Midi2KBOut
 
             Utils.Pprint("Warning! This converter may not play correctly tracks that have mutliple instruments.\n",
                 ConsoleColor.Yellow);
+
+            Utils.Pprint("\n==Key Binds==\n\nKey: DELETE -- Play/Stop MIDI Track", ConsoleColor.Yellow);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -126,11 +134,12 @@ namespace Midi2KBOut
                     Utils.Pprint(
                         $"Window with Process ID:'{_id}' is focused automatically. Waiting 2 seconds before playing the MIDI track...\n",
                         ConsoleColor.White);
-                    Thread.Sleep(2000);
-                    _mid?.BeginPlayingTracks();
                     btnPlay.Text = "Stop";
                     rBSendInput.Enabled = false;
                     rBkeybdevent.Enabled = false;
+                    tBTempo.Enabled = false;
+                    Thread.Sleep(2000);
+                    _mid?.BeginPlayingTracks();
                 }
                 else if (btnPlay.Text == "Stop")
                 {
@@ -141,6 +150,7 @@ namespace Midi2KBOut
                     btnPlay.Text = "Play";
                     rBSendInput.Enabled = true;
                     rBkeybdevent.Enabled = true;
+                    tBTempo.Enabled = true;
                 }
             }
             else
@@ -169,6 +179,61 @@ namespace Midi2KBOut
             if (rBkeybdevent.Checked)
             {
                 _mid.usingkeybdevent = true;
+            }
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            if (_mid != null)
+            {
+                _mid.Tempo = tBTempo.Value;
+                lbTempo.Text = $"Tempo: {tBTempo.Value}";
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (!Application.OpenForms.OfType<Midi2VPBinds>().Any()) new Midi2VPBinds().Show();
+        }
+        private void keyPressDetect_Tick(object sender, EventArgs e)
+        {
+            if (_mid != null)
+            {
+                KeyState DeleteKeyPressed = User32Methods.GetAsyncKeyState(VirtualKey.DELETE);
+                if (DeleteKeyPressed.IsPressed)
+                {
+                    if (!_mid.bIsPlaying)
+                    {
+                        SystemSounds.Asterisk.Play();
+                        Utils.Pprint(
+                            "Beginning play of MIDI file. Waiting 2 seconds before playing the MIDI track...\n",
+                            ConsoleColor.White);
+                        btnPlay.Text = "Stop";
+                        rBSendInput.Enabled = false;
+                        rBkeybdevent.Enabled = false;
+                        tBTempo.Enabled = false;
+
+                        Thread.Sleep(1000);
+                        _mid.BeginPlayingTracks();
+                    }
+                    else
+                    {
+                        SystemSounds.Asterisk.Play();
+                        Utils.Pprint(
+                            "Player has stopped.\n",
+                            ConsoleColor.Yellow);
+                        _mid.bIsPlaying = false;
+                        _mid.TrackPlayThread.Abort();
+                        _mid.TrackPlayThread = null;
+
+                        btnPlay.Text = "Play";
+                        rBSendInput.Enabled = true;
+                        rBkeybdevent.Enabled = true;
+                        tBTempo.Enabled = true;
+
+                        Thread.Sleep(500);
+                    }
+                }
             }
         }
     }

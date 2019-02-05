@@ -121,6 +121,7 @@
     <Reference Include="WinApi, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WinApi.4.0.0\lib\netstandard1.4\WinApi.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mid2VPAbout.cs">
@@ -128,6 +129,12 @@
     </Compile>
     <Compile Include="Mid2VPAbout.Designer.cs">
       <DependentUpon>Mid2VPAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Midi2VPBinds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Midi2VPBinds.Designer.cs">
+      <DependentUpon>Midi2VPBinds.cs</DependentUpon>
     </Compile>
     <Compile Include="MidiNotes.cs" />
     <Compile Include="MidiToVPianoMain.cs">
@@ -141,6 +148,9 @@
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="Mid2VPAbout.resx">
       <DependentUpon>Mid2VPAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Midi2VPBinds.resx">
+      <DependentUpon>Midi2VPBinds.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MidiToVPianoMain.resx">
       <DependentUpon>MidiToVPianoMain.cs</DependentUpon>

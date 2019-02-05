@@ -3,7 +3,6 @@ C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Debug\MIDI to VirtualPiano Co
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Debug\MIDI to VirtualPiano Converter.pdb
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Debug\Melanchall.DryWetMidi.xml
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\bin\Debug\System.Diagnostics.DiagnosticSource.xml
-C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\MID2VPiano.csprojAssemblyReference.cache
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\Midi2KBOut.Mid2VpAbout.resources
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\Midi2KBOut.MidiToVPianoMain.resources
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\MID2VPiano.Properties.Resources.resources
@@ -12,3 +11,4 @@ C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\MID2VPiano.csproj.CoreC
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\MID2VPiano.csproj.CopyComplete
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\MIDI to VirtualPiano Converter.exe
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\MIDI to VirtualPiano Converter.pdb
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Debug\MID2VPiano.Midi2VPBinds.resources

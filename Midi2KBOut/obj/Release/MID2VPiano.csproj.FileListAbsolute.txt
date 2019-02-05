@@ -11,3 +11,4 @@ C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csproj.Cor
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csproj.CopyComplete
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MIDI to VirtualPiano Converter.exe
 C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MIDI to VirtualPiano Converter.pdb
+C:\Users\Ae\source\repos\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.Midi2VPBinds.resources
