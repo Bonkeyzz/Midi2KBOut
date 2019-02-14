@@ -11,9 +11,7 @@ namespace Midi2KBOut
 {
     public class MidiNotes
     {
-        private const double DTempoDivider = 0.00024;
-        private const string SvPianoScale = "1!2@34$5%6^78*9(0qQwWeErtTyYuiIoOpPasSdDfgGhHjJklLzZxcCvVbBnm";
-        private const string SSpecialChars = ")!@#$%^&*(";
+        private const double Freq = 0.00024;
         private double _offset = -1;
 
         public Thread TrackPlayThread;
@@ -21,13 +19,9 @@ namespace Midi2KBOut
         public bool usingkeybdevent = false;
         private double _tStart;
 
-        public EventWaitHandle wh = new AutoResetEvent(true);
-
-        public bool bIsPaused = false;
-
         public MidiNotes(MidiFile file)
         {
-            Tempo = file.GetTempoMap().Tempo.AtTime(0).MicrosecondsPerQuarterNote * DTempoDivider;
+            Tempo = file.GetTempoMap().Tempo.AtTime(0).MicrosecondsPerQuarterNote * Freq;
             Division = Convert.ToDouble(file.TimeDivision.ToString().Split(' ')[0]);
             CurrentMidiFile = file;
         }
@@ -36,18 +30,7 @@ namespace Midi2KBOut
         private double Division { get; }
         private MidiFile CurrentMidiFile { get; }
 
-        private static string NoteToVPianoKey(byte note)
-        {
-            var mapNote = note - 23 - 12 - 1;
-
-            while (mapNote >= SvPianoScale.Length) mapNote -= 12;
-
-            while (mapNote < 0) mapNote += 12;
-
-            return SvPianoScale[mapNote].ToString();
-        }
-
-        private void MidiClockDelay(double time)
+        private void NotePressSleep(double time)
         {
             var goTime = (time - _offset) * (60 / Math.Round(Tempo));
 
@@ -57,59 +40,34 @@ namespace Midi2KBOut
             }
         }
 
-        private double timeSincePause = -1;
-
         private void PlayTrack(TrackChunk track)
         {
-            Utils.Pprint($"[MidiNotes::PlayTrack()] Started! Output Mode: {(usingkeybdevent ? "keybd_event" : "SendInput")}\n", ConsoleColor.Green);
+            
+            Utils.Pprint($"Playback of the track has started! KeyPress Mode: {(usingkeybdevent ? "keybd_event" : "SendInput")}\n", ConsoleColor.Green);
             _tStart = Utils.GetTime();
 
             var notes = new List<Note>(track.GetNotes().ToList());
 
+
             foreach (var note in notes)
             {
+
                 if (bIsPlaying)
                 {
                     var noteTime = ((double) note.Time / Division);
-                    var noteName = NoteToVPianoKey(note.NoteNumber);
+                    var noteName = Utils.ConvertToKBNote(note.NoteNumber);
 
+                        Utils.PrintNote(note, noteTime);
 
-                    Utils.Pprint($"[MidiNotes::PlayTrack()] Time: {noteTime:F3}\tNote / VPNote: '{note.NoteName}' / '{noteName}', Vel: {note.Velocity}, Oct: {note.Octave}, Len: {note.Length}, Ch: {note.Channel}\r\n", ConsoleColor.Magenta);
+                        if (_offset == -1) _offset = noteTime;
 
-                    if (_offset == -1) _offset = noteTime;
-
-                    var isLetterOrDigit = SSpecialChars.Contains(noteName) | char.IsUpper(char.Parse(noteName));
-
-                    MidiClockDelay(noteTime);
-                    if (!usingkeybdevent)
-                    {
-                        if (isLetterOrDigit)
-                        {
-                            Utils.SendShift(true);
-                            Utils.SendKey(noteName);
-                            Utils.SendShift(false);
-                        }
-                        else
-                        {
-                            Utils.SendKey(noteName);
-                        }
-                    }
-                    else
-                    {
-                        if (isLetterOrDigit)
-                        {
-                            Utils.keybdSendKey(noteName, true);
-                        }
-                        else
-                        {
-                            Utils.keybdSendKey(noteName, false);
-                        }
-                    }
+                        NotePressSleep(noteTime);
+                        Utils.PressKeys(noteName, usingkeybdevent ? Utils.KeyPressMode.KBDEVENT : Utils.KeyPressMode.SENDINPUT);
                 }
             }
 
             bIsPlaying = false;
-            Utils.Pprint("[MidiNotes::PlayTrack()] Finished!\n", ConsoleColor.Green);
+            Utils.Pprint("Playback of the track was finished!\n", ConsoleColor.Green);
             if (Application.OpenForms.OfType<MidiToVPianoMain>().Any())
                 Application.OpenForms.OfType<MidiToVPianoMain>().First().btnPlay.Invoke(new MethodInvoker(() =>
                 {

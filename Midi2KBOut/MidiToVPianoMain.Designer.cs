@@ -34,18 +34,18 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txFileLocation = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.rBkeybdevent = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rBSendInput = new System.Windows.Forms.RadioButton();
             this.btnAbout = new System.Windows.Forms.Button();
-            this.lbTempo = new System.Windows.Forms.Label();
             this.btnPlay = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.cmWinList = new System.Windows.Forms.ComboBox();
-            this.rBSendInput = new System.Windows.Forms.RadioButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.rBkeybdevent = new System.Windows.Forms.RadioButton();
+            this.lbTempo = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.tBTempo = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.tBTempo = new System.Windows.Forms.TrackBar();
             this.keyPressDetect = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -99,6 +99,52 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Target Window";
             // 
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(553, 46);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 37);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Key Binds";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // rBkeybdevent
+            // 
+            this.rBkeybdevent.AutoSize = true;
+            this.rBkeybdevent.Enabled = false;
+            this.rBkeybdevent.Location = new System.Drawing.Point(123, 44);
+            this.rBkeybdevent.Name = "rBkeybdevent";
+            this.rBkeybdevent.Size = new System.Drawing.Size(236, 17);
+            this.rBkeybdevent.TabIndex = 8;
+            this.rBkeybdevent.Text = "keybd_event (Slower, works on Garry\'s Mod)";
+            this.rBkeybdevent.UseVisualStyleBackColor = true;
+            this.rBkeybdevent.CheckedChanged += new System.EventHandler(this.rBkeybdevent_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 46);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Mode:";
+            // 
+            // rBSendInput
+            // 
+            this.rBSendInput.AutoSize = true;
+            this.rBSendInput.Checked = true;
+            this.rBSendInput.Enabled = false;
+            this.rBSendInput.Location = new System.Drawing.Point(45, 44);
+            this.rBSendInput.Name = "rBSendInput";
+            this.rBSendInput.Size = new System.Drawing.Size(74, 17);
+            this.rBSendInput.TabIndex = 6;
+            this.rBSendInput.TabStop = true;
+            this.rBSendInput.Text = "SendInput";
+            this.rBSendInput.UseVisualStyleBackColor = true;
+            this.rBSendInput.CheckedChanged += new System.EventHandler(this.rBSendInput_CheckedChanged);
+            // 
             // btnAbout
             // 
             this.btnAbout.Location = new System.Drawing.Point(634, 46);
@@ -108,15 +154,6 @@
             this.btnAbout.Text = "About";
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
-            // 
-            // lbTempo
-            // 
-            this.lbTempo.AutoSize = true;
-            this.lbTempo.Location = new System.Drawing.Point(6, 25);
-            this.lbTempo.Name = "lbTempo";
-            this.lbTempo.Size = new System.Drawing.Size(52, 13);
-            this.lbTempo.TabIndex = 4;
-            this.lbTempo.Text = "Tempo: 0";
             // 
             // btnPlay
             // 
@@ -149,40 +186,14 @@
             this.cmWinList.TabIndex = 0;
             this.cmWinList.DropDownClosed += new System.EventHandler(this.cmWinList_DropDownClosed);
             // 
-            // rBSendInput
+            // lbTempo
             // 
-            this.rBSendInput.AutoSize = true;
-            this.rBSendInput.Checked = true;
-            this.rBSendInput.Enabled = false;
-            this.rBSendInput.Location = new System.Drawing.Point(45, 44);
-            this.rBSendInput.Name = "rBSendInput";
-            this.rBSendInput.Size = new System.Drawing.Size(74, 17);
-            this.rBSendInput.TabIndex = 6;
-            this.rBSendInput.TabStop = true;
-            this.rBSendInput.Text = "SendInput";
-            this.rBSendInput.UseVisualStyleBackColor = true;
-            this.rBSendInput.CheckedChanged += new System.EventHandler(this.rBSendInput_CheckedChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(37, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Mode:";
-            // 
-            // rBkeybdevent
-            // 
-            this.rBkeybdevent.AutoSize = true;
-            this.rBkeybdevent.Enabled = false;
-            this.rBkeybdevent.Location = new System.Drawing.Point(123, 44);
-            this.rBkeybdevent.Name = "rBkeybdevent";
-            this.rBkeybdevent.Size = new System.Drawing.Size(236, 17);
-            this.rBkeybdevent.TabIndex = 8;
-            this.rBkeybdevent.Text = "keybd_event (Slower, works on Garry\'s Mod)";
-            this.rBkeybdevent.UseVisualStyleBackColor = true;
-            this.rBkeybdevent.CheckedChanged += new System.EventHandler(this.rBkeybdevent_CheckedChanged);
+            this.lbTempo.AutoSize = true;
+            this.lbTempo.Location = new System.Drawing.Point(6, 25);
+            this.lbTempo.Name = "lbTempo";
+            this.lbTempo.Size = new System.Drawing.Size(52, 13);
+            this.lbTempo.TabIndex = 4;
+            this.lbTempo.Text = "Tempo: 0";
             // 
             // groupBox3
             // 
@@ -191,10 +202,19 @@
             this.groupBox3.Controls.Add(this.lbTempo);
             this.groupBox3.Location = new System.Drawing.Point(12, 165);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(821, 136);
+            this.groupBox3.Size = new System.Drawing.Size(821, 108);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "MIDI Properties";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 52);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(121, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "New Tempo (Max: 200):";
             // 
             // tBTempo
             // 
@@ -208,26 +228,6 @@
             this.tBTempo.Value = 120;
             this.tBTempo.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 52);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "New Tempo (Max: 200):";
-            // 
-            // button1
-            // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(553, 46);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 37);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Key Binds";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // keyPressDetect
             // 
             this.keyPressDetect.Interval = 200;
@@ -237,7 +237,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(845, 313);
+            this.ClientSize = new System.Drawing.Size(845, 287);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);

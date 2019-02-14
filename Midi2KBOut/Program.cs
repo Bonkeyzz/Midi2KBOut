@@ -7,7 +7,7 @@ namespace Midi2KBOut
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        public const string SVersion = "v1.4.0";
+        public const string SVersion = "v1.4.1";
 
 
 

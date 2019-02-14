@@ -2,14 +2,17 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Melanchall.DryWetMidi.MusicTheory;
 using WinApi.User32;
+using Note = Melanchall.DryWetMidi.Smf.Interaction.Note;
 
 namespace Midi2KBOut
 {
     public static class Utils
     {
+        private const string SvPianoScale = "1!2@34$5%6^78*9(0qQwWeErtTyYuiIoOpPasSdDfgGhHjJklLzZxcCvVbBnm";
         /// <summary>
-        /// Console.Write function with color support.
+        /// Console.Write but with colors!
         /// </summary>
         /// <param name="sText">Text to print</param>
         /// <param name="fColor">The text color</param>
@@ -24,15 +27,31 @@ namespace Midi2KBOut
             Console.ResetColor();
         }
 
-        
+        public static string ConvertToKBNote(byte note)
+        {
+            var mapNote = note - 23 - 12 - 1;
+
+            while (mapNote >= SvPianoScale.Length) mapNote -= 12;
+
+            while (mapNote < 0) mapNote += 12;
+
+            return SvPianoScale[mapNote].ToString();
+        }
+
+        public enum KeyPressMode
+        {
+            KBDEVENT,
+            SENDINPUT,
+        }
+
         [DllImport("user32.dll")]
         private static extern uint MapVirtualKey(uint uCode, uint uMapType);
         [DllImport("user32.dll")]
         private static extern uint VkKeyScan(char ch);
         [DllImport("user32.dll")]
-        static extern void keybd_event(ushort bVk, ushort bScan, uint dwFlags, UIntPtr dwExtraInfo);
+        private static extern void keybd_event(ushort bVk, ushort bScan, uint dwFlags, UIntPtr dwExtraInfo);
 
-        public static void SendKey(string key)
+        private static void SendKey(string key)
         {
             Input inputKey = new Input();
             inputKey.Type = InputType.INPUT_KEYBOARD;
@@ -45,7 +64,7 @@ namespace Midi2KBOut
             User32Helpers.SendInput(new[] { inputKey });
 
         }
-        public static void SendShift(bool press)
+        private static void SendShift(bool press)
         {
             Input inputShift = new Input();
             uint shiftKey = MapVirtualKey((uint)Keys.ShiftKey, 0x0);
@@ -61,7 +80,7 @@ namespace Midi2KBOut
             User32Helpers.SendInput(new[] { inputShift });
         }
 
-        private static void SendKeybdShift(bool press)
+        private static void KeybdSendShift(bool press)
         {
             if (press)
             {
@@ -73,7 +92,7 @@ namespace Midi2KBOut
                 keybd_event(0x10, 0x45, (uint)KeyboardInputFlags.KEYEVENTF_EXTENDEDKEY | (uint)KeyboardInputFlags.KEYEVENTF_KEYUP, UIntPtr.Zero);
             }
         }
-        public static void keybdSendKey(string key, bool shifted)
+        private static void KeybdSendKey(string key, bool shifted)
         {
             int delayTime = 12;
            ushort bKey = (ushort) VkKeyScan(char.Parse(key));
@@ -81,10 +100,10 @@ namespace Midi2KBOut
 
             if (shifted)
             {
-                SendKeybdShift(true);
+                KeybdSendShift(true);
                 keybd_event(bKey, bScan, 0, UIntPtr.Zero);
                 Thread.Sleep(delayTime);
-                SendKeybdShift(false);
+                KeybdSendShift(false);
             }
             else
             {
@@ -100,5 +119,42 @@ namespace Midi2KBOut
             return timeSpan.TotalSeconds;
         }
 
+        public static void PressKeys(string keys, KeyPressMode mode)
+        {
+         var specialKeys = ")!@#$%^&*(";
+            foreach (var key in keys)
+            {
+                var isSpecialCharOrUpper = specialKeys.Contains(key.ToString()) | char.IsUpper(key);
+                switch (mode)
+                {
+                    case KeyPressMode.KBDEVENT:
+                        KeybdSendKey(key.ToString(), isSpecialCharOrUpper);
+                        break;
+                    case KeyPressMode.SENDINPUT:
+                        if (isSpecialCharOrUpper)
+                        {
+                            SendShift(true);
+                            SendKey(key.ToString());
+                            SendShift(false);
+                        }
+                        else
+                        {
+                            SendKey(key.ToString());
+                        }
+                        break;
+                }
+            }
+        }
+
+        public static void PrintNote(Note note, double time)
+        {
+           Pprint("[Note] ", ConsoleColor.Cyan);
+           Pprint($"NTime / Time(s): {note.Time} / {time:F2}\t", ConsoleColor.Yellow);
+           Pprint($"NoteName / KBNote: {note.NoteName}({note.NoteNumber}) / '{ConvertToKBNote(note.NoteNumber)}', ", ConsoleColor.Magenta);
+           Pprint($"Vel: {note.Velocity}, ", ConsoleColor.DarkMagenta);
+           Pprint($"Oct: {note.Octave}, ", ConsoleColor.DarkGreen);
+           Pprint($"Ch: {note.Channel}, ", ConsoleColor.Gray);
+           Pprint($"Len: {note.Length}\r\n", ConsoleColor.Green);
+        }
     }
 }
