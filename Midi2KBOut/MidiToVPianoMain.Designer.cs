@@ -110,9 +110,9 @@
             this.cbox_noteeventlogs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbox_noteeventlogs.Location = new System.Drawing.Point(9, 66);
             this.cbox_noteeventlogs.Name = "cbox_noteeventlogs";
-            this.cbox_noteeventlogs.Size = new System.Drawing.Size(180, 17);
+            this.cbox_noteeventlogs.Size = new System.Drawing.Size(144, 17);
             this.cbox_noteeventlogs.TabIndex = 10;
-            this.cbox_noteeventlogs.Text = "Debug: Enable Note Event Logs";
+            this.cbox_noteeventlogs.Text = "Disable Note Event Logs";
             this.cbox_noteeventlogs.UseVisualStyleBackColor = true;
             this.cbox_noteeventlogs.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 

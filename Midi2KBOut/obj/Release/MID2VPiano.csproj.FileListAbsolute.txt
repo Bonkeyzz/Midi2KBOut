@@ -26,3 +26,4 @@ C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csproj.Cor
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csproj.CopyComplete
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\MIDI to VirtualPiano Converter.exe
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\MIDI to VirtualPiano Converter.pdb
+C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csprojAssemblyReference.cache
