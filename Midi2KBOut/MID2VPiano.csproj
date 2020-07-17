@@ -136,7 +136,7 @@
     <Compile Include="Midi2VPBinds.Designer.cs">
       <DependentUpon>Midi2VPBinds.cs</DependentUpon>
     </Compile>
-    <Compile Include="MidiNotes.cs" />
+    <Compile Include="MidiToKeyboardProcessor.cs" />
     <Compile Include="MidiToVPianoMain.cs">
       <SubType>Form</SubType>
     </Compile>

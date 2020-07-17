@@ -17,7 +17,7 @@ namespace Midi2KBOut
         private MidiFile _dryWetMidiFile;
         private int _id;
 
-        private MidiNotes _mid;
+        private MidiToKeyboardProcessor _mid;
         private OpenFileDialog _midiDialog;
 
         public MidiToVPianoMain()
@@ -35,20 +35,20 @@ namespace Midi2KBOut
                     rBkeybdevent.Enabled = false;
                     rBSendInput.Enabled = false;
                     tBTempo.Enabled = false;
-                    keyPressDetect.Enabled = false;
+                    PlayKeyPressDetect.Enabled = false;
                 }
                 else
                 {
                     txFileLocation.Text = _midiDialog.FileName;
                     _dryWetMidiFile = MidiFile.Read(_midiDialog.FileName);
 
-                    _mid = new MidiNotes(_dryWetMidiFile);
+                    _mid = new MidiToKeyboardProcessor(_dryWetMidiFile);
                     rBkeybdevent.Enabled = true;
                     rBSendInput.Enabled = true;
                     tBTempo.Enabled = true;
                     tBTempo.Value = (int)_mid.Tempo;
                     _mid.usingkeybdevent = rBkeybdevent.Checked;
-                    keyPressDetect.Enabled = true;
+                    PlayKeyPressDetect.Enabled = true;
 
                     Utils.Pprint("\n==Midi Info==\n\n", ConsoleColor.White);
                     Utils.Pprint($"Midi Name: {_midiDialog.SafeFileName}\n", ConsoleColor.White);
@@ -91,7 +91,10 @@ namespace Midi2KBOut
             Utils.Pprint("Warning! This converter may not play correctly tracks that have mutliple instruments.\n",
                 ConsoleColor.Yellow);
 
-            Utils.Pprint("\n==Key Binds==\n\nKey: DELETE -- Play/Stop MIDI Track", ConsoleColor.Yellow);
+            Utils.Pprint("\n==Key Binds==\n\n" +
+                "INSERT -- Play/Stop MIDI Track\n" +
+                "DELETE -- Pause/Resume MIDI Track\n" +
+                "-/+ -- Decrease/Increase Tempo", ConsoleColor.Yellow);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -144,8 +147,8 @@ namespace Midi2KBOut
                 else if (btnPlay.Text == "Stop")
                 {
                     if (_mid.bIsPlaying) _mid.bIsPlaying = false;
-                    _mid?.TrackPlayThread.Abort();
-                    _mid.TrackPlayThread = null;
+                    _mid?.thrTrackPlayThread.Abort();
+                    _mid.thrTrackPlayThread = null;
                     Utils.Pprint("Player has stopped.\n", ConsoleColor.Yellow);
                     btnPlay.Text = "Play";
                     rBSendInput.Enabled = true;
@@ -199,10 +202,10 @@ namespace Midi2KBOut
         {
             if (_mid != null)
             {
-                KeyState DeleteKeyPressed = User32Methods.GetAsyncKeyState(VirtualKey.DELETE);
+                KeyState DeleteKeyPressed = User32Methods.GetAsyncKeyState(VirtualKey.INSERT);
                 if (DeleteKeyPressed.IsPressed)
                 {
-                    if (!_mid.bIsPlaying)
+                    if (!_mid.bIsPlaying && !_mid.bHasStartedPlaying)
                     {
                         SystemSounds.Asterisk.Play();
                         Utils.Pprint(
@@ -223,8 +226,9 @@ namespace Midi2KBOut
                             "Player has stopped.\n",
                             ConsoleColor.Yellow);
                         _mid.bIsPlaying = false;
-                        _mid.TrackPlayThread.Abort();
-                        _mid.TrackPlayThread = null;
+                        _mid.bHasStartedPlaying = false;
+                        _mid.thrTrackPlayThread.Abort();
+                        _mid.thrTrackPlayThread = null;
 
                         btnPlay.Text = "Play";
                         rBSendInput.Enabled = true;
@@ -233,6 +237,54 @@ namespace Midi2KBOut
 
                         Thread.Sleep(500);
                     }
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            _mid.bIsPlaying = true;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            _mid.bIsPlaying = false;
+        }
+
+        private void pauseKeyDetect_Tick(object sender, EventArgs e)
+        {
+            KeyState PauseKey = User32Methods.GetAsyncKeyState(VirtualKey.DELETE);
+            if(PauseKey.IsPressed)
+            {
+                if (_mid != null)
+                {
+                    if (_mid.bHasStartedPlaying)
+                    {
+                        _mid.bIsPlaying = !_mid.bIsPlaying;
+                        _mid.lastUtcTimeSincePause = Utils.GetTime();
+                        Utils.Pprint($"Player has {(_mid.bIsPlaying ? "resumed!" : "paused")}.\n", ConsoleColor.Yellow);
+                    }
+                }
+            }
+        }
+
+        private void tempoKeysDetect_Tick(object sender, EventArgs e)
+        {
+            KeyState TempoIncreaseKey = User32Methods.GetAsyncKeyState(VirtualKey.ADD);
+            KeyState TempoDecreaseKey = User32Methods.GetAsyncKeyState(VirtualKey.SUBTRACT);
+            if(_mid != null)
+            {
+                if(TempoIncreaseKey.IsPressed)
+                {
+                    tBTempo.Value += 5;
+                    _mid.Tempo = tBTempo.Value;
+                    lbTempo.Text = $"Tempo: {tBTempo.Value}";
+                }
+                else if (TempoDecreaseKey.IsPressed)
+                {
+                    tBTempo.Value -= 5;
+                    _mid.Tempo = tBTempo.Value;
+                    lbTempo.Text = $"Tempo: {tBTempo.Value}";
                 }
             }
         }

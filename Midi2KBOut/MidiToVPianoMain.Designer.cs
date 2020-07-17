@@ -46,7 +46,9 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tBTempo = new System.Windows.Forms.TrackBar();
-            this.keyPressDetect = new System.Windows.Forms.Timer(this.components);
+            this.PlayKeyPressDetect = new System.Windows.Forms.Timer(this.components);
+            this.pauseKeyDetect = new System.Windows.Forms.Timer(this.components);
+            this.tempoKeysDetect = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -228,10 +230,21 @@
             this.tBTempo.Value = 120;
             this.tBTempo.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
-            // keyPressDetect
+            // PlayKeyPressDetect
             // 
-            this.keyPressDetect.Interval = 200;
-            this.keyPressDetect.Tick += new System.EventHandler(this.keyPressDetect_Tick);
+            this.PlayKeyPressDetect.Interval = 200;
+            this.PlayKeyPressDetect.Tick += new System.EventHandler(this.keyPressDetect_Tick);
+            // 
+            // pauseKeyDetect
+            // 
+            this.pauseKeyDetect.Enabled = true;
+            this.pauseKeyDetect.Interval = 180;
+            this.pauseKeyDetect.Tick += new System.EventHandler(this.pauseKeyDetect_Tick);
+            // 
+            // tempoKeysDetect
+            // 
+            this.tempoKeysDetect.Enabled = true;
+            this.tempoKeysDetect.Tick += new System.EventHandler(this.tempoKeysDetect_Tick);
             // 
             // MidiToVPianoMain
             // 
@@ -276,7 +289,9 @@
         public System.Windows.Forms.TrackBar tBTempo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
-        public System.Windows.Forms.Timer keyPressDetect;
+        public System.Windows.Forms.Timer PlayKeyPressDetect;
+        private System.Windows.Forms.Timer pauseKeyDetect;
+        private System.Windows.Forms.Timer tempoKeysDetect;
     }
 }
 
