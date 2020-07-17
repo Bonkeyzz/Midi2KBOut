@@ -34,7 +34,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txFileLocation = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.cbox_noteeventlogs = new System.Windows.Forms.CheckBox();
+            this.btnKeyBinds = new System.Windows.Forms.Button();
             this.rBkeybdevent = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.rBSendInput = new System.Windows.Forms.RadioButton();
@@ -86,7 +87,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.cbox_noteeventlogs);
+            this.groupBox2.Controls.Add(this.btnKeyBinds);
             this.groupBox2.Controls.Add(this.rBkeybdevent);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.rBSendInput);
@@ -101,16 +103,27 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Target Window";
             // 
-            // button1
+            // cbox_noteeventlogs
             // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(553, 46);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 37);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Key Binds";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.cbox_noteeventlogs.AutoSize = true;
+            this.cbox_noteeventlogs.Location = new System.Drawing.Point(9, 66);
+            this.cbox_noteeventlogs.Name = "cbox_noteeventlogs";
+            this.cbox_noteeventlogs.Size = new System.Drawing.Size(144, 17);
+            this.cbox_noteeventlogs.TabIndex = 10;
+            this.cbox_noteeventlogs.Text = "Disable Note Event Logs";
+            this.cbox_noteeventlogs.UseVisualStyleBackColor = true;
+            this.cbox_noteeventlogs.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // btnKeyBinds
+            // 
+            this.btnKeyBinds.Enabled = false;
+            this.btnKeyBinds.Location = new System.Drawing.Point(553, 46);
+            this.btnKeyBinds.Name = "btnKeyBinds";
+            this.btnKeyBinds.Size = new System.Drawing.Size(75, 37);
+            this.btnKeyBinds.TabIndex = 9;
+            this.btnKeyBinds.Text = "Key Binds";
+            this.btnKeyBinds.UseVisualStyleBackColor = true;
+            this.btnKeyBinds.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // rBkeybdevent
             // 
@@ -288,10 +301,11 @@
         private System.Windows.Forms.GroupBox groupBox3;
         public System.Windows.Forms.TrackBar tBTempo;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnKeyBinds;
         public System.Windows.Forms.Timer PlayKeyPressDetect;
         private System.Windows.Forms.Timer pauseKeyDetect;
         private System.Windows.Forms.Timer tempoKeysDetect;
+        private System.Windows.Forms.CheckBox cbox_noteeventlogs;
     }
 }
 

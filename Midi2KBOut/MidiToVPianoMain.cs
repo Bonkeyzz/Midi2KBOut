@@ -47,7 +47,7 @@ namespace Midi2KBOut
                     rBSendInput.Enabled = true;
                     tBTempo.Enabled = true;
                     tBTempo.Value = (int)_mid.Tempo;
-                    _mid.usingkeybdevent = rBkeybdevent.Checked;
+                    _mid.bUsingkeybdevent = rBkeybdevent.Checked;
                     PlayKeyPressDetect.Enabled = true;
 
                     Utils.Pprint("\n==Midi Info==\n\n", ConsoleColor.White);
@@ -174,14 +174,14 @@ namespace Midi2KBOut
 
         private void rBSendInput_CheckedChanged(object sender, EventArgs e)
         {
-            if (rBSendInput.Checked) _mid.usingkeybdevent = false;
+            if (rBSendInput.Checked) _mid.bUsingkeybdevent = false;
         }
 
         private void rBkeybdevent_CheckedChanged(object sender, EventArgs e)
         {
             if (rBkeybdevent.Checked)
             {
-                _mid.usingkeybdevent = true;
+                _mid.bUsingkeybdevent = true;
             }
         }
 
@@ -287,6 +287,11 @@ namespace Midi2KBOut
                     lbTempo.Text = $"Tempo: {tBTempo.Value}";
                 }
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            _mid.bDisableNoteEvents = cbox_noteeventlogs.Checked;
         }
     }
 }

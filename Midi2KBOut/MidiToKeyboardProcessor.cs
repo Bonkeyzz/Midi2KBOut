@@ -16,7 +16,9 @@ namespace Midi2KBOut
         public Thread thrTrackPlayThread;
         public bool bIsPlaying = false;
         public bool bHasStartedPlaying = false;
-        public bool usingkeybdevent = false;
+        public bool bUsingkeybdevent = false;
+
+        public bool bDisableNoteEvents = false;
         private double dNoteOriginalStartTime;
 
 
@@ -60,7 +62,7 @@ namespace Midi2KBOut
         /// </summary>
         public void PlayTrack(object track)
         {
-            Utils.Pprint($"Playback of the track has started! KeyPress Mode: {(usingkeybdevent ? "keybd_event" : "SendInput")}\n", ConsoleColor.Green);
+            Utils.Pprint($"Playback of the track has started! KeyPress Mode: {(bUsingkeybdevent ? "keybd_event" : "SendInput")}\n", ConsoleColor.Green);
             dNoteOriginalStartTime = Utils.GetTime();
             dNoteStartOffset = -1;
             lastUtcTimeSincePause = 0;
@@ -77,13 +79,13 @@ namespace Midi2KBOut
                     var noteTime = ((double)note.Time / Division);
                     var noteName = Utils.ConvertToKBNote(note.NoteNumber);
 
-                    Utils.PrintNote(note, noteTime);
+                    if(bDisableNoteEvents) Utils.PrintNote(note, noteTime);
 
                     if (dNoteStartOffset == -1) dNoteStartOffset = noteTime;
 
 
                     NotePressSleep(noteTime);
-                    Utils.PressKeys(noteName, usingkeybdevent ? Utils.KeyPressMode.KBDEVENT : Utils.KeyPressMode.SENDINPUT);
+                    Utils.PressKeys(noteName, bUsingkeybdevent ? Utils.KeyPressMode.KBDEVENT : Utils.KeyPressMode.SENDINPUT);
                 }
             }
 

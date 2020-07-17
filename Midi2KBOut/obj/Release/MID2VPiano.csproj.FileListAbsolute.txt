@@ -17,7 +17,6 @@ C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\bin\Release\MIDI to VirtualPiano 
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\bin\Release\MIDI to VirtualPiano Converter.pdb
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\bin\Release\Melanchall.DryWetMidi.xml
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\bin\Release\System.Diagnostics.DiagnosticSource.xml
-C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.csprojAssemblyReference.cache
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\Midi2KBOut.Mid2VpAbout.resources
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\MID2VPiano.Midi2VPBinds.resources
 C:\Users\bonke\Documents\Midi2KBOut\Midi2KBOut\obj\Release\Midi2KBOut.MidiToVPianoMain.resources
