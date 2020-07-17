@@ -43,6 +43,7 @@ namespace Midi2KBOut
                     _dryWetMidiFile = MidiFile.Read(_midiDialog.FileName);
 
                     _mid = new MidiToKeyboardProcessor(_dryWetMidiFile);
+                    _mid.bDisableNoteEvents = cbox_noteeventlogs.Checked;
                     rBkeybdevent.Enabled = true;
                     rBSendInput.Enabled = true;
                     tBTempo.Enabled = true;
@@ -291,7 +292,10 @@ namespace Midi2KBOut
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            _mid.bDisableNoteEvents = cbox_noteeventlogs.Checked;
+            if (_mid != null)
+            {
+                _mid.bDisableNoteEvents = cbox_noteeventlogs.Checked;
+            }
         }
     }
 }

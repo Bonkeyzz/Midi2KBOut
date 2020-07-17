@@ -79,7 +79,7 @@ namespace Midi2KBOut
                     var noteTime = ((double)note.Time / Division);
                     var noteName = Utils.ConvertToKBNote(note.NoteNumber);
 
-                    if(bDisableNoteEvents) Utils.PrintNote(note, noteTime);
+                    if(!bDisableNoteEvents) Utils.PrintNote(note, noteTime);
 
                     if (dNoteStartOffset == -1) dNoteStartOffset = noteTime;
 
